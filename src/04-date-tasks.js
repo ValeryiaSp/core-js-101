@@ -53,8 +53,16 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  if (year % 4 !== 0) {
+    return false;
+  } if (year % 100 !== 0) {
+    return true;
+  } if (year % 400 !== 0) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -73,8 +81,9 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const timeInSec = endDate.getTime() - startDate.getTime() / 1000;
+  return timeInSec;
 }
 
 
@@ -94,8 +103,16 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hours = date.getUTCHours() % 12;
+  const minutes = date.getUTCMinutes();
+  const hourAngle = 0.5 * (60 * hours + minutes);
+  const minuteAngle = 6 * minutes;
+  let angle = Math.abs(hourAngle - minuteAngle);
+  if (angle > 180) {
+    angle = 360 - angle;
+  }
+  return angle * (Math.PI / 180);
 }
 
 
