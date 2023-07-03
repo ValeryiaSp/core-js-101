@@ -203,8 +203,16 @@ function getTail(arr, n) {
  *    +'20,21,22,23,24\n'
  *    +'30,31,32,33,34'
  */
-function toCsvText(/* arr */) {
-  throw new Error('Not implemented');
+function toCsvText(arr) {
+  let result = '';
+
+  for (let i = 0; i < arr.length; i += 1) {
+    result += `${arr[i].join(',')}\n`;
+  }
+
+  result = result.trim();
+
+  return result;
 }
 
 /**
@@ -444,8 +452,14 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  arr.sort((a, b) => {
+    if (a.country === b.country) {
+      return a.city.localeCompare(b.city);
+    }
+    return a.country.localeCompare(b.country);
+  });
+  return arr;
 }
 
 /**
@@ -570,8 +584,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce((acc, current) => acc.concat(childrenSelector(current)), []);
 }
 
 
@@ -587,8 +601,12 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  let currentStepValue = arr;
+  for (let i = 0; i < indexes.length; i += 1) {
+    currentStepValue = currentStepValue[indexes[i]];
+  }
+  return currentStepValue;
 }
 
 
@@ -613,8 +631,9 @@ function getElementByIndexes(/* arr, indexes */) {
 function swapHeadAndTail(arr) {
   const halfOfArr = Math.floor(arr.length / 2);
   const head = arr.slice(0, halfOfArr);
-  const tail = arr.slice(halfOfArr);
-  return tail.concat(head);
+  const tail = arr.slice(arr.length - halfOfArr);
+  const center = arr.slice(halfOfArr, arr.length - halfOfArr);
+  return tail.concat(center).concat(head);
 }
 
 module.exports = {
